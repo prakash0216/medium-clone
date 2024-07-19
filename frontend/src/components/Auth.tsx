@@ -3,6 +3,7 @@ import { ChangeEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Backend_URL } from "../config";
+import { BlogSkeleton } from "./BlogSkeleton";
 
 export const Auth = ({ type }: { type: "signup" | "signin" }) => {
   const navigate = useNavigate();
@@ -12,7 +13,10 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
     password: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   async function sendRequest() {
+    setLoading(true);
     try {
       const response = await axios.post(
         `${Backend_URL}/api/v1/user/${type === "signup" ? "signup" : "signin"}`,
@@ -25,7 +29,20 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
       alert(
         type === "signup" ? "Error while signing up" : "Error while signing in"
       );
+    } finally {
+      setLoading(false);
     }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center mt-16">
+        <BlogSkeleton />
+        <BlogSkeleton />
+        <BlogSkeleton />
+        <BlogSkeleton />
+      </div>
+    );
   }
 
   return (
@@ -83,6 +100,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
             <button
               onClick={sendRequest}
               type="button"
+              disabled={loading}
               className="mt-6 w-full text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
             >
               {type === "signup" ? "Sign up" : "Sign in"}
