@@ -3,11 +3,30 @@ import axios from "axios";
 import { Backend_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 import { ChangeEvent, useState } from "react";
+import { useAuthRedirect } from "../hooks";
+import { BlogSkeleton } from "../components/BlogSkeleton";
 
 export const Publish = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const navigate = useNavigate();
+  const isLoggedIn = useAuthRedirect();
+
+  if (!isLoggedIn) {
+    return (
+      <div>
+        <Appbar />
+        <div className="flex justify-center">
+          <div>
+            <BlogSkeleton />
+            <BlogSkeleton />
+            <BlogSkeleton />
+            <BlogSkeleton />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
