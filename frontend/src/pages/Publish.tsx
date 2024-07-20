@@ -15,7 +15,6 @@ export const Publish = () => {
   if (!isLoggedIn) {
     return (
       <div>
-        <Appbar />
         <div className="flex justify-center">
           <div>
             <BlogSkeleton />
