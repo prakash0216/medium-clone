@@ -78,7 +78,7 @@ export const useAuthRedirect = () => {
       const timer = setTimeout(() => {
         alert("You are not logged in, please SignIn");
         navigate("/signin");
-      }, 1000);
+      }, 2000);
       return () => clearTimeout(timer);
     }
   }, [navigate]);
